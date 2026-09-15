@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+int main() {
+    struct Node *head = NULL, *temp, *prev, *newNode;
+    int n, i, value, pos;
+
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("Enter data: ");
+        scanf("%d", &value);
+
+        newNode = malloc(sizeof(struct Node));
+        newNode->data = value;
+
+        if (head == NULL) {
+            head = newNode;
+            newNode->next = head;
+        } else {
+            temp = head;
+
+            while (temp->next != head)
+                temp = temp->next;
+
+            temp->next = newNode;
+            newNode->next = head;
+        }
+    }
+
+    printf("Enter position to delete: ");
+    scanf("%d", &pos);
+
+    if (head == NULL) {
+        printf("List is empty");
+    } else if (pos == 1) {
+        temp = head;
+
+        while (temp->next != head)
+            temp = temp->next;
+
+        if (head->next == head) {
+            free(head);
+            head = NULL;
+        } else {
+            temp->next = head->next;
+            temp = head;
+            head = head->next;
+            free(temp);
+        }
+    } else {
+        temp = head;
+
+        for (i = 1; i < pos; i++) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        prev->next = temp->next;
+        free(temp);
+    }
+
+    printf("Circular Linked List: ");
+
+    if (head != NULL) {
+        temp = head;
+
+        do {
+            printf("%d ", temp->data);
+            temp = temp->next;
+        } while (temp != head);
+    }
+
+    return 0;
+}
